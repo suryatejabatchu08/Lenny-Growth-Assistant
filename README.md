@@ -128,7 +128,7 @@ The React frontend will start at http://localhost:3000.
 
 ## How to Run Tests
 
-The repository includes test suites covering API endpoints, agent routing/grounding, and vector retrieval logic.
+The repository includes test suites covering API endpoints, agent routing/grounding, script injection/sandboxing security, and vector retrieval logic.
 
 ### 1. Run Automated Test Suite
 Run tests using Python inside your activated virtual environment:
@@ -145,7 +145,37 @@ pytest -v
 ### 2. Verified Test Coverage
 - `tests/test_api.py`: Validates FastAPI `/health`, `/health/ready`, and `/config` endpoints.
 - `tests/test_agents.py`: Tests `QAAgent`, `Ship30Agent`, low-grounding fallbacks, and `AgentOrchestrator` routing.
+- `tests/test_artifact_sandbox.py`: Verifies Markdown/HTML artifact validation, script injection detection (`<script>` and `on*` inline event handlers), and iframe sandbox policy compliance.
 - `tests/test_retrieval.py`: Tests embedding generation, vector similarity RPC lookup, and singleton service instantiation.
+
+---
+
+## Troubleshooting
+
+### 1. Ollama Connection Error (`ProviderUnavailableError`)
+- **Symptom**: `Ollama isn't reachable at http://localhost:11434` or API returns `503 Service Unavailable`.
+- **Solution**:
+  - Verify Ollama is installed and running (`ollama serve`).
+  - Pull the required model: `ollama pull llama3.2:3b`.
+  - Alternatively, switch `LLM_PROVIDER=anthropic` in `.env` and set `ANTHROPIC_API_KEY`.
+
+### 2. Database / Vector RPC Error
+- **Symptom**: `relation "transcript_chunks" does not exist` or `function match_chunks(...) does not exist`.
+- **Solution**:
+  - Connect to your Supabase/PostgreSQL database and execute `init_db.sql`.
+  - Ensure the `pgvector` extension is enabled (`CREATE EXTENSION IF NOT EXISTS vector;`).
+
+### 3. Missing Dependencies or Module Import Errors
+- **Symptom**: `ModuleNotFoundError: No module named '...'` when running scripts or tests.
+- **Solution**:
+  - Ensure you are using Python 3.11+ in an active virtual environment.
+  - Re-install requirements: `pip install -r requirements.txt`.
+
+### 4. CORS or Frontend API Connection Issues
+- **Symptom**: Frontend shows network error or cannot reach http://localhost:8000.
+- **Solution**:
+  - Verify FastAPI backend is running on port 8000 (`uvicorn api.main:app --reload --port 8000`).
+  - Set `REACT_APP_API_URL=http://localhost:8000` in `frontend/.env` or `.env`.
 
 ---
 
