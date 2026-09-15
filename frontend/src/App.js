@@ -142,7 +142,7 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Box sx={{ display: 'flex', flexDirection: 'column', height: '100vh', bgcolor: 'background.default' }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', height: '100vh', minHeight: '100vh', maxWidth: '100vw', overflow: 'hidden', bgcolor: 'background.default' }}>
         {/* Header */}
         <AppBar position="static" elevation={0} sx={{ borderBottom: '1px solid #e2e8f0', bgcolor: '#ffffff', color: '#1e293b' }}>
           <Toolbar variant="dense" sx={{ display: 'flex', justifyContent: 'space-between', py: 1 }}>
