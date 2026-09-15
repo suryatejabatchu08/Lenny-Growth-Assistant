@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  # Ollama service (for local model)
+  ollama:
+    image: ollama/ollama:latest
+    container_name: lenny_growth_ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    environment:
+      - OLLAMA_HOST=0.0.0.0
+    restart: unless-stopped
+
+  # API service (FastAPI + Supabase RAG)
+  api:
+    build:
+      context: .
+      dockerfile: api/Dockerfile.api
+    container_name: lenny_growth_api
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    volumes:
+      - ./api:/app/api
+      - ./data:/app/data
+    depends_on:
+      - ollama
+    restart: unless-stopped
+
+  # Frontend service (React UI)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: lenny_growth_frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - REACT_APP_API_URL=http://localhost:8000
+    depends_on:
+      - api
+    restart: unless-stopped
+
+volumes:
+  ollama_data:
+
+networks:
+  default:
+    name: lenny_growth_network
+    driver: bridge
