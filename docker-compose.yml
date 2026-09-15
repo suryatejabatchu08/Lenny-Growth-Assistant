@@ -34,7 +34,7 @@ services:
   frontend:
     build:
       context: ./frontend
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.frontend
     container_name: lenny_growth_frontend
     ports:
       - "3000:3000"
