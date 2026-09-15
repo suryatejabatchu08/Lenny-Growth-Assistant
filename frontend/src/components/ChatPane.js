@@ -46,10 +46,12 @@ const ChatPane = ({ sessionId, onSessionChange, onArtifactCreated }) => {
     fetchMessages();
   }, [sessionId, apiUrl]);
 
-  // Scroll to bottom when messages change
+  // Scroll to bottom when new messages arrive or loading begins
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages, loading]);
+    if (messages.length > 0 || loading) {
+      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages.length, loading]);
 
   const handleSendMessage = async (e) => {
     if (e) e.preventDefault();
