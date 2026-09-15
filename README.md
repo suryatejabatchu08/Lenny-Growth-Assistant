@@ -12,7 +12,7 @@ Lenny Growth Assistant combines vector retrieval with multi-agent orchestration 
 - **Grounded Conversational RAG**: Answers queries using semantically relevant transcript chunks with clear source attribution and episode citations.
 - **Multi-Agent System**:
   - **Q&A Agent**: Answers product/growth questions with grounded citations and confidence fallback behavior.
-  - **Ship 30 Agent**: Transforms insights into structured, viral 300-word atomic essays.
+  - **Ship 30 Agent**: Transforms insights into structured, viral 1,250-word atomic essays.
   - **Artifact Agent**: Formats multi-turn code or rich content for rendering in the interactive UI.
   - **Orchestrator**: Routes user intent dynamically to the optimal specialized agent.
 - **Provider Flexibility**: Supports local inference (Ollama with `llama3.2:3b`) and cloud LLMs (Anthropic Claude).
